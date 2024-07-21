@@ -9,7 +9,6 @@ model_path = model_path = r"C:\Users\nehar\My_All_Projects\AI-ML_bootcamp\ML_mod
 
 model = joblib.load(model_path)
 
-# Extract feature names from the model if they are available
 try:
     expected_columns = model.feature_names_in_
 except AttributeError:
@@ -17,19 +16,15 @@ except AttributeError:
     expected_columns = []
 
 def main():
-    # Set the title of the web app
     st.title('Employee Attrition Prediction')
 
-    # Add a description
-    st.write('Enter employee information to predict attrited or not.')
+    st.write('Enter employee information to predict whether he/she will be attrited or not.')
 
-    # Create columns for layout
     col1, col2 = st.columns([2, 1])
     
     with col1:
         st.subheader('Employee Information')
 
-        # Add input fields for features
         employee_name = st.text_input('Employee Name')
         Gender = st.selectbox("Employee's Gender", ['Female', 'Male'])
         Age = st.slider("Employee's Age", 15, 65, 30)
@@ -73,7 +68,6 @@ def main():
     MaritalStatus = {'Single': 0, 'Married': 1, 'Divorce': 2}.get(MaritalStatus, 0)
     OverTime = 1 if OverTime == 'Yes' else 0
 
-    # Prepare input data as a DataFrame
     input_data = pd.DataFrame({
         'Gender': [Gender],
         'Age': [Age],
@@ -108,11 +102,9 @@ def main():
         'YearsWithCurrManager': [YearsWithCurrManager]
     })
 
-    # Ensure columns are in the same order as during model training
     if len(expected_columns) > 0:
         input_data = input_data.reindex(columns=expected_columns)
 
-    # Prediction and results section
     with col2:
         st.subheader('Prediction')
         if st.button('Predict'):
@@ -123,26 +115,20 @@ def main():
                 st.write(f'Prediction for {employee_name}: {"Attrited" if prediction[0] == 1 else "Not Attrited"}')
                 st.write(f'Probability of Attrition: {probability:.2f}')
 
-                # Plotting
                 fig, axes = plt.subplots(3, 1, figsize=(8, 16))
 
-                # Plot Attrition probability
                 sns.barplot(x=['Not Attrited', 'Attrited'], y=[1 - probability, probability], ax=axes[0], palette=['blue', 'red'])
                 axes[0].set_title('Attrition Probability')
                 axes[0].set_ylabel('Probability')
 
-                # Plot Probability distribution (mocked, as we don't have the actual distribution)
                 sns.histplot([probability], kde=True, ax=axes[1])
                 axes[1].set_title('Probability Distribution')
 
-                # Plot Attrition pie chart
                 axes[2].pie([1 - probability, probability], labels=['Not Attrited', 'Attrited'], autopct='%1.1f%%', colors=['blue', 'red'])
                 axes[2].set_title('Attrition Pie Chart')
 
-                # Display the plots
                 st.pyplot(fig)
 
-                # Provide recommendations
                 if prediction[0] == 1:
                     st.success(f"{employee_name} is likely to attrite. Consider reviewing engagement strategies.")
                 else:
