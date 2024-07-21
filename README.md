@@ -24,11 +24,11 @@ The following must be installed:
 ### Steps
 1. Clone the repository
     ```bash
-    git clone https://github.com/neharikastha/AI-ML_bootcamp.git
+    git clone https://github.com/neharikastha/EmployeeAttritionPrediction.git
     ```
 2. Navigate to your project directory
     ```bash
-    cd AI-ML_bootcamp
+    cd EmployeeAttritionPrediction
     ```
 3. Install dependencies
     ```bash
